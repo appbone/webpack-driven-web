@@ -7,8 +7,12 @@ var webpackConfigIndex = {
     },
     output: {
         path: './dist/index',
-        filename: '[name].[hash:5].js' // XXX 为什么 chunk 的 hash 跟 entry 是一样的, 会造成
-        // 仅仅一个 chunk 修改了, 所有的 hash 都会修改, 这样不会造成资源浪费吗?
+        filename: '[name].[hash:5].js',
+        // 添加 chunkFilename 规则后, 如果修改单个 chunk 文件,
+        // 生成的文件改变的只有这个 chunk.js 和 entry.js
+        // 例如:   index.3316a.js, 1.b3a84.js, 2.9a17d.js
+        // 修改后: index.19ede.js, 1.13061.js, 2.9a17d.js
+        chunkFilename: '[name].[chunkhash:5].js'
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -24,7 +28,8 @@ var webpackConfigAbout = {
     },
     output: {
         path: './dist/about',
-        filename: '[name].[hash:5].js'
+        filename: '[name].[hash:5].js',
+        chunkFilename: '[name].[chunkhash:5].js'
     },
     plugins: [
         new HtmlWebpackPlugin({
