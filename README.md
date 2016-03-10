@@ -45,4 +45,11 @@ dist/
 * 如何在项目中管理资源类文件
 
 ## 参考
-[在Webpack中使用Code Splitting实现按需加载](http://www.alloyteam.com/2016/02/code-split-by-routes/)
+* [在Webpack中使用Code Splitting实现按需加载](http://www.alloyteam.com/2016/02/code-split-by-routes/)
+* [Welcome to Future of Web Application Delivery](https://medium.com/@ryanflorence/welcome-to-future-of-web-application-delivery-9750b7564d9f#.pf5iadz0j)
+  
+  > I’ve known for years I was delivering my web application the wrong way.
+  > * Dropping 9 script tags at the top of a page and blocking UI
+  > * Dropping 132 script tags at the bottom of a page, screwing up the order of dependencies and flooding the network
+  > * Using AMD without a build with waterfall dependency loading (oops)
+  > * Using modules with a build, sending 650 kilobytes of gzipped code in a single file that the visitor probably won’t ever need to run. Also, not sending any HTML over the network but building it all with JavaScript after JavaScript loaded.
