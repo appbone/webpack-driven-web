@@ -1,6 +1,8 @@
 document.body.style.backgroundColor = '#ccc';
 console.log('I am index');
 
+// 一个 require.ensure 即一个 Code Splitting 分离点, 即产生一个 chunk.js
+// 如果延迟执行 require.ensure 即可延时加载这个js
 // 通过延时来模拟按需加载模块
 setTimeout(function() {
     require.ensure([], function(require) {
