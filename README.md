@@ -26,15 +26,15 @@ npm run build
 dist/
 ├── index/
 |   |── index.html
-|   |── index.bundle.js
-|   |── 1.1.bundle.js
-|   └── 2.2.bundle.js
+|   |── index.[hash].js
+|   |── 1.[chunkhash].js
+|   └── 2.[chunkhash].js
 |
 └── about/
     |── about.html
-    |── about.bundle.js
-    |── 1.1.bundle.js
-    └── 2.2.bundle.js
+    |── about.[hash].js
+    |── 1.[chunkhash].js
+    └── 2.[chunkhash].js
 ```
 
 ## TODO
