@@ -1,0 +1,17 @@
+{
+  "name": "webpack-codes-plitting-example",
+  "version": "0.1.0",
+  "description": "简单整理了下 webpack Code Splitting 的使用方法",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --progress --colors --profile --display-error-details",
+    "dev": "set MODE=dev&& webpack --progress --colors --profile --display-error-details --watch"
+  },
+  "author": "Sun",
+  "license": "MIT",
+  "devDependencies": {
+    "html-webpack-plugin": "^2.9.0",
+    "webpack": "^1.12.9"
+  }
+}
