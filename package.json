@@ -1,7 +1,7 @@
 {
-  "name": "webpack-codes-plitting-example",
+  "name": "webpack-driven-web",
   "version": "0.1.0",
-  "description": "简单整理了下 webpack Code Splitting 的使用方法",
+  "description": "通过 webpack 来驱动 web 开发",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,8 +10,17 @@
   },
   "author": "Sun",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appbone/webpack-driven-web.git"
+  },
   "devDependencies": {
+    "exports-loader": "^0.6.3",
     "html-webpack-plugin": "^2.9.0",
+    "imports-loader": "^0.6.5",
     "webpack": "^1.12.9"
+  },
+  "dependencies": {
+    "jquery": "^2.2.2"
   }
 }
