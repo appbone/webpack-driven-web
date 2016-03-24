@@ -141,7 +141,14 @@ dist/
 
 ## TODO
 * 如何在项目中管理 CSS(在这里引入 PostCSS)
-  * 并最终打包成一个页面.css
+  - 并最终打包成一个页面.css
+  - 需要支持 css sprite
+* 通过 ExtractTextPlugin + css-loader + file-loader 实现 css 依赖管理
+  - 有个弊端就是所有文件都是打包到模块的输入目录中, 而不是保持开发是的目录结果
+  - 会导致共享资源没有没有集中加载
+  - 例如: css 中 background-image: url(../lib/app/res/github-publish.png);
+  - 结果会在 output 目录中复制过来这个图片, 最终变为 background-image: url(github-publish.png);
+  - 可能需要是一个其他的方案, 例如 PostCSS + gulp
 
 ## 参考
 * [在Webpack中使用Code Splitting实现按需加载](http://www.alloyteam.com/2016/02/code-split-by-routes/)
