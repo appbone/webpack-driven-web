@@ -1,3 +1,4 @@
+require('./index.css');
 var $ = require('jquery');
 
 console.log('I am index');

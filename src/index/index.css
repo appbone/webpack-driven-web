@@ -1,0 +1,14 @@
+@import url(../../node_modules/bootstrap/dist/css/bootstrap.min.css);
+
+.body--index {
+    background-color: #aaa;
+}
+
+.index-banner {
+    display: flex;
+    width: 635px;
+    height: 117px;
+    transform: translate(100px,100px);
+    animation: a;
+    background-image: url(../lib/app/res/github-publish.png);
+}

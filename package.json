@@ -15,12 +15,16 @@
     "url": "git+https://github.com/appbone/webpack-driven-web.git"
   },
   "devDependencies": {
+    "css-loader": "^0.23.1",
     "exports-loader": "^0.6.3",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
     "html-webpack-plugin": "^2.9.0",
     "imports-loader": "^0.6.5",
     "webpack": "^1.12.9"
   },
   "dependencies": {
+    "bootstrap": "^3.3.6",
     "jquery": "^2.2.2"
   }
 }

@@ -152,10 +152,10 @@ dist/
   > * Dropping 132 script tags at the bottom of a page, screwing up the order of dependencies and flooding the network
   > * Using AMD without a build with waterfall dependency loading (oops)
   > * Using modules with a build, sending 650 kilobytes of gzipped code in a single file that the visitor probably won’t ever need to run. Also, not sending any HTML over the network but building it all with JavaScript after JavaScript loaded.
-* [webpack的几个常用loader](http://www.blogways.net/blog/2016/01/19/webpack-loader.html)
-
-
 * [webpack使用小记](http://pinkyjie.com/2016/03/05/webpack-tips)
+* [webpack的几个常用loader](http://www.blogways.net/blog/2016/01/19/webpack-loader.html)
+* [webpack使用优化](http://www.alloyteam.com/2016/01/webpack-use-optimization/)
+* [An Introduction To PostCSS](http://www.smashingmagazine.com/2015/12/introduction-to-postcss/)
 * [](https://github.com/PinkyJie/angular1-webpack-starter)
 * http://pinkyjie.com/2016/01/31/component-based-development-with-angular-1x/
 * http://pinkyjie.com/2015/08/02/commonly-used-gulp-plugins-part-1/
