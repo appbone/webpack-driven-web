@@ -151,7 +151,7 @@ addPageEntry('page1/page1/subpage');
 
 开发模式下
 
-![开发模式下的模块](http://github.com/appbone/webpack-driven-web/blob/master/src/index/res/modules.png?raw=true)
+![开发模式下的模块](https://github.com/appbone/webpack-driven-web/blob/master/src/index/res/modules.png?raw=true)
 
 非开发模式下[]()
 

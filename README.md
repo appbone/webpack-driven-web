@@ -4,7 +4,7 @@ wdw: 通过 webpack 来驱动 Web 开发
 * webpack 前端工程化应用
 * 基于 webpack 的多页应用架构
 
-![wdw-snapshot](http://github.com/appbone/webpack-driven-web/blob/master/src/about/res/wdw-snapshot.png?raw=true)
+![wdw-snapshot](https://github.com/appbone/webpack-driven-web/blob/master/src/about/res/wdw-snapshot.png?raw=true)
 
 ## 功能
 
