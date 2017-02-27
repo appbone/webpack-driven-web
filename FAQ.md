@@ -151,7 +151,7 @@ addPageEntry('page1/page1/subpage');
 
 开发模式下
 
-![](src\index\res\modules.png)
+![开发模式下的模块](http://github.com/appbone/webpack-driven-web/blob/master/src/index/res/modules.png?raw=true)
 
 非开发模式下[]()
 
@@ -232,5 +232,5 @@ dist/
 * [img-sprite 实现](http://cupools.github.io/2015/100122/ "合并精灵图工具")
 * [An Introduction To PostCSS](http://www.smashingmagazine.com/2015/12/introduction-to-postcss/)
 * [webpack入坑之旅](http://guowenfh.github.io/2016/03/24/vue-webpack-01-base/)
-* 常用gulp插件介绍[一](http://pinkyjie.com/2015/08/02/commonly-used-gulp-plugins-part-1/)[二](http://pinkyjie.com/2015/08/12/commonly-used-gulp-plugins-part-2/)
+* [常用gulp插件介绍一](http://pinkyjie.com/2015/08/02/commonly-used-gulp-plugins-part-1/)[二](http://pinkyjie.com/2015/08/12/commonly-used-gulp-plugins-part-2/)
 * [webpack多页应用架构系列](https://segmentfault.com/a/1190000006843916)

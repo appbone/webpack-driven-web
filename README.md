@@ -4,6 +4,8 @@ wdw: 通过 webpack 来驱动 Web 开发
 * webpack 前端工程化应用
 * 基于 webpack 的多页应用架构
 
+![wdw-snapshot](http://github.com/appbone/webpack-driven-web/blob/master/src/about/res/wdw-snapshot.png?raw=true)
+
 ## 功能
 
 * 基于 `webpack@1.x` 的前端工程化实践
@@ -60,9 +62,9 @@ webpack-driven-web/
 
 ## 常见问题答疑
 
-* [为什么做这个工程化实践?]()
-* [如何添加其他的页面?]()
-* [如何指定的开发模式?]()
-* [最终构建后的效果是怎样的?]()
-* [什么时候支持 webpack 2.x?]()
-* [参考]()
+* [为什么做这个工程化实践?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#为什么做这个工程化实践)
+* [如何添加其他的页面?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#如何添加其他的页面)
+* [如何指定的开发模式?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#如何指定的开发模式)
+* [最终构建后的效果是怎样的?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#最终构建后的效果是怎样的)
+* [什么时候支持 webpack 2.x?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#什么时候支持-webpack-2x)
+* [参考](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#参考)
