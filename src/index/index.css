@@ -1,14 +1,19 @@
-@import url(../../node_modules/bootstrap/dist/css/bootstrap.min.css);
+/* https://segmentfault.com/a/1190000006897458 */
+/* 在 css 里的 url() 语句, 在css-loader看来, 就跟 require() 语句是一样的 */
+/* 只要在 webpack 配置文件里定义好加载各类型资源的 loader, 那这url()语句实际上什么资源都能处理*/
 
-.body--index {
-    background-color: #aaa;
+/* 理想中是在 CSS 文件中管理第三方依赖, 最终打包出一个类似 vendor.css 的文件, 但最后还是没有找到好的方法让 webpack 自动从 CSS @import 中提取出公共依赖, 因此现在放在 CommonsChunkPlugin 由他来提取 */
+/*@import url(../../node_modules/bootstrap/dist/css/bootstrap.css);*/
+
+.module-list li {
+    margin-bottom: 0.5em;
 }
 
-.index-banner {
-    display: flex;
-    width: 635px;
-    height: 117px;
-    transform: translate(100px,100px);
-    animation: a;
-    background-image: url(../lib/app/res/github-publish.png);
+.what-is-webpack {
+    display: inline-block;
+    width: 300px;
+    height: 300px;
+    background-image: url(res/what-is-webpack.png);
+    background-repeat: no-repeat;
+    background-size: contain;
 }

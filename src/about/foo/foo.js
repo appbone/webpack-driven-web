@@ -5,9 +5,9 @@ import bootstrap from 'bootstrap';
 // app 公共逻辑
 import app from 'lib/app/app.js';
 
-// 模块样式
-import './about.css';
+// 模块的样式
+import './foo.css';
 
-console.log('about.js');
+console.log('foo.js');
 
-export default 'about.js';
+export default 'foo';

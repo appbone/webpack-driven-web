@@ -1,148 +1,99 @@
 var path = require('path');
-var webpack = require('webpack');
-// https://github.com/webpack/extract-text-webpack-plugin
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var merge = require('webpack-merge');
 
-var env = process.env;
+var webpackBaseConfig = require('./config/webpack.base.config.js');
+var webpackConfig = merge(webpackBaseConfig);
 
-var webpackConfigIndex = {
-    entry: {
-        index: './src/index/index.js'
-    },
-    output: {
-        path: './dist/index',
-        filename: '[name]-1.0.0-[hash:6].js',
-        // 添加 chunkFilename 规则后, 如果修改单个 chunk 文件,
-        // 生成的文件改变的只有单独的 chunk.js 和 entry.js
-        // 例如:   index.3316a.js, 1.b3a84.js, 2.9a17d.js
-        // 修改后: index.19ede.js, 1.13061.js, 2.9a17d.js
-        chunkFilename: '[name]-1.0.0-[chunkhash:6].js'
-    },
-    module: {
-        loaders: [{
-            test: /\.css$/,
-            // https://github.com/webpack/css-loader
-            // @import and url(...) are interpreted like require()
-            // https://github.com/ai/browserslist#queries
-            // https://github.com/ben-eb/cssnano/issues/69
-            // TODO Disable behavior url
-            loader: ExtractTextPlugin.extract(env.MODE == 'dev' ? 'css?{"sourceMap":true,"autoprefixer":{"add":true,"browsers":["last 2 versions"]}}' : 'css?{"autoprefixer":{"add":true,"browsers":["last 2 versions"]}}')
-        }, {
-            // test: /\.(png|jpg|gif|eot|svg|ttf|woff|woff2)$/, loader: 'file-loader?name=[name].[ext]?[hash:6]'
-            test: /\.(png|jpg|gif|eot|svg|ttf|woff|woff2)$/, loader: 'file-loader?name=[name]-[hash:6].[ext]'
-        }]
-    },
-    plugins: [
-        new webpack.BannerPlugin('index v1.0.0 ' + new Date().toLocaleDateString() + ' | (c) 2014-2015 mydomain.com', {
-            entryOnly: true
-        }),
-        new HtmlWebpackPlugin({
-            template: './src/index/index.html',
-            filename: 'index.html'
-        }),
-        new webpack.NoErrorsPlugin()
-    ],
-    // http://webpack.github.io/docs/library-and-externals.html#applications-and-externals
-    // 依赖的外部 JS, 需要手工在页面中预先添加 script
-    externals: {
-        // 这样的模块仅仅是直接 exports 出这个全局变量而已
-        // 相当于: module.exports = jQuery;
-        jquery: 'jQuery'
-    },
-    resolve: {
-        alias: {
-            // 直接指定使用 min 版
-            'bootstrap-css': path.resolve('node_modules', 'bootstrap/dist/css/bootstrap.min.css')
-        }
-    }
-};
+var projectConfig = require('./config/project-config.js');
+var pkg = projectConfig.pkg;
+var env = projectConfig.env;
+var config = projectConfig.config;
 
-var webpackConfigAbout = {
-    entry: {
-        about: './src/about/about.js',
-        vendor: [
-            'jquery', // 由于注册成 npm commonjs 模块就无法在浏览器中全局访问 jQuery 了
-            './src/lib/vendor/lib-common.js',
-            './src/lib/vendor/lib-global.js',
-            './src/lib/vendor/lib-jqueryplugin.js'
+// 默认的首页入口
+var pageEntries = [{
+    entryName: 'index/index',
+    entry: path.resolve(config.src, 'index/index.js'),
+    template: path.resolve(config.src, 'index.html'),
+    filename: 'index.html'
+}];
+
+/**
+ * 添加页面模块
+ * 
+ * @param entryName {string} 模块名, 与模块的入口文件保持一致(仅去掉 JS 文件后缀)
+ */
+function addPageEntry(entryName) {
+    var entry = entryName + '.js';
+    var template = entryName + '.html';
+
+    pageEntries.push({
+        entryName: entryName,
+        entry: path.resolve(config.src, entry),
+        template: path.resolve(config.src, template),
+        filename: template
+    });
+}
+
+/**
+ * 给页面添加 webpack 配置
+ * 
+ * @param pageEntry {object} {
+ *     entryName: 'index/index',
+ *     entry: './src/index/index.js',
+ *     template: './src/index.html',
+ *     filename: 'index.html'
+ * }
+ */
+function addPageWebpackConfig(pageEntry) {
+    var entry = {};
+    entry[pageEntry.entryName] = pageEntry.entry;
+
+    // XXX 多个页面使用一份 webpack 配置, 就会造成每个页面引入的 manifest 会包含所有页面的模块信息
+    // 如果想解决这个问题, 可以每个页面返回一个单独的 webpack 配置即可
+    // 例如: module.exports = [webpackConfigIndex, webpackConfigAbout];
+    var baseChunks = ['manifest', 'vendor', 'app'];
+    var chunks = baseChunks.concat(pageEntry.entryName);
+
+    webpackConfig = merge(webpackConfig, {
+        entry: entry,
+        plugins: [
+            new HtmlWebpackPlugin({
+                template: pageEntry.template,
+                // filename 利用 / 即可达到控制文件目录结构的效果
+                filename: pageEntry.filename,
+                // 页面中需要加入的模块
+                chunks: chunks,
+                chunksSortMode: 'dependency',
+                minify: {
+                    removeComments: true,
+                    collapseWhitespace: true,
+                    removeScriptTypeAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    minifyJS: true,
+                    minifyCSS: true,
+                    minifyURLs: true
+                }
+                // 配置信息可以在 template 中使用, 例如 <%= htmlWebpackPlugin.options.option1 %>
+                // 因此可以在这里实现 ejs 的 Including nested templates 功能
+                // https://github.com/okonet/ejs-loader#including-nested-templates
+                // 
+                // 其他可以使用的变量还有: webpack, webpackConfig
+            })
         ]
-    },
-    output: {
-        path: './dist/about',
-        filename: '[name]-1.0.0-[hash:6].js',
-        // publicPath: 'http://yourcdn.com/about',
-        chunkFilename: '[name]-1.0.0-[chunkhash:6].js'
-    },
-    resolve: {
-        alias: {
-            // 直接指定使用 min 版
-            'jquery': path.resolve('node_modules', 'jquery/dist/jquery.min.js'),
-            'lib': path.resolve(__dirname, 'src/lib')
-        }
-    },
-    module: {
-        noParse: ['jquery'],
-        loaders: [{
-            test: /lib-global\.js/,
-            // http://webpack.github.io/docs/shimming-modules.html
-            // imports: 将 window 依赖导入为 this
-            //          .call(window);
-            // exports: 将 libGlobal 导出为模块
-            //          module.exports = libGlobal;
-            loader: 'imports?this=>window!exports?libGlobal'
-        }]
-    },
-    plugins: [
-        // http://webpack.github.io/docs/list-of-plugins.html#bannerplugin
-        new webpack.BannerPlugin('about v1.0.0 ' + new Date().toLocaleDateString() + ' | (c) 2014-2015 mydomain.com', {
-            entryOnly: true
-        }),
-        // http://webpack.github.io/docs/list-of-plugins.html#2-explicit-vendor-chunk
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor'
-        }),
-        // http://webpack.github.io/docs/list-of-plugins.html#defineplugin
-        // 相对于替换代码中的变量(左边的值)替换成右边的值, 例如 VERSION 替换成字符串 5fa3b9
-        new webpack.DefinePlugin({
-            VERSION: JSON.stringify('5fa3b9'), // 注意字符串一定要 stringify, 否则会被认为是 code fragment
-            BROWSER_SUPPORTS_HTML5: true,
-            TWO: '1+1', // code fragment
-            ENV: {
-                cdn1: JSON.stringify('http://cdn1'),
-                cdn2: JSON.stringify('http://cdn2')
-            }
-        }),
-        // https://github.com/ampedandwired/html-webpack-plugin
-        new HtmlWebpackPlugin({
-            template: './src/about/about.html',
-            filename: 'about.html'
-        }),
-        // http://webpack.github.io/docs/shimming-modules.html#plugin-provideplugin
-        new webpack.ProvidePlugin({
-            '$': 'jquery',
-            'jQuery': 'jquery',
-            'window.$': 'jquery',
-            'window.jQuery': 'jquery'
-        }),
-        new webpack.NoErrorsPlugin()
-    ]
-};
+    });
+}
 
-var webpackConfig = [webpackConfigIndex, webpackConfigAbout];
-webpackConfig.forEach(function(config) {
-    if (env.MODE == 'dev') {
-        config.devtool = 'source-map';
-        config.output.filename = config.output.chunkFilename = '[name].js';
-        config.plugins.push(new ExtractTextPlugin('[name].css'));
-    } else {
-        config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                // drop_console: true
-            }
-        }));
-        config.plugins.push(new ExtractTextPlugin('[name]-1.0.0-[contenthash:6].css'));
-    }
+// 如果考虑自动扫描多页面模块(不需要每次自己配置), 可以参考 multi-vue
+// https://github.com/blade254353074/multi-vue/blob/master/tools/config/index.js#constructEntries
+addPageEntry('about/about');
+addPageEntry('about/foo/foo');
+
+// 给所有页面模块添加 webpack 配置
+pageEntries.forEach(function(pageEntry) {
+    addPageWebpackConfig(pageEntry);
 });
 
+// console.log(webpackConfig);
 module.exports = webpackConfig;

@@ -1,171 +1,68 @@
 # webpack-driven-web
-wdw: 通过 webpack 来驱动 web 开发
+wdw: 通过 webpack 来驱动 Web 开发
 
-* 通过 webpack 打包各种模块(终于不用担心全局变量了)
-* 通过 webpack code splitting 实现按需加载(轻松)
-* 通过 webpack xxx
+* webpack 前端工程化应用
+* 基于 webpack 的多页应用架构
 
-## Web 网站包含些什么东西?
-* 多个 html 页面(例如首页/关于页/产品介绍页等独立页面)
-* 每个 html 页面包含
-  - 一个或多个第三方库(js/css/res)
-  - 一个或多个该网站公共的样式和资源(css/res)
-  - 一个或多个该网站公共的逻辑(js)
-  - 一个或多个该页面专有的样式和资源(css/res)
-  - 一个或多个该页面专有的逻辑(js)
+## 功能
 
-## 正式发布时会是什么样子?
-* 发布的目录结构与开发时最好保持一致
-* 第三方库合并/压缩成一个文件或者直接引用公共 CDN
-  - vendor.js
-  - vendor.css
-* 合并/压缩该网站公共的样式(需要支持 CSS sprite)
-  - app.css
-* 合并/压缩该网站公共的逻辑
-  - app.js
-* 合并/压缩每个页面专有的样式(需要支持 CSS sprite)
-  - page.css
-* 合并/压缩每个页面专有的逻辑
-  - page.js
+* 基于 `webpack@1.x` 的前端工程化实践
+  * 没有任何魔法, 便于扩展出适合自己的前端工程化方案, 例如单页, react, vue 等
+* 使用 `ES2015` 来开发
+  * 使用 `ES2015` 模块来写标准的代码
+* 支持多页面的架构
+* 区分开发模式
+  * 开发模式下不做压缩
+  * 开发模式下不做文件 hash
+  * 开发模式下开启 sourcemap
+* 抽离出独立的 CSS 文件
+  * 第三方 CSS(vendor.css)
+  * 项目公共 CSS(app.css)
+  * 页面 CSS(page.css)
+* 提取出公共模块
+  * 第三方 JS(vendor.js)
+  * 项目功能 JS(app.js)
+* 考虑了前端项目开发过程中的一般问题
+  * 图片优化(`image-webpack`)
+  * inline manifest(`InlineManifestWebpackPlugin`)
+  * 生成稳定的模块ID(`HashedModuleIdsPlugin`)
+  * 使用 `webpack-dev-server` 作为开发时的服务器, 并配置了代理
 
-因此我们理想的发布后的 Web 网站应该是这样的, 请参考[网站项目目录结构规范](https://github.com/appbone/mobile-spa-boilerplate/blob/master/directory.md)
+## 使用方法
+
+首先 `npm install` 来安装项目依赖, 然后执行 `npm start` 启动 `webpack-dev-server` 来开始开发
+
+### 其他命令
+
+| 命令                | 作用 |
+|---------------------|------|
+| `npm run watch`     | 执行 `webpack` 构建并处于 `watch` 模式, 便于脱离 `webpack-dev-server` 来开发 |
+| `npm run build`     | 清理构建文件, 重新执行一次构建, 一般用于发布版本的时候 |
+| `npm run mockserver`| 启动 [puer-mock](https://github.com/ufologist/puer-mock) 作为 mockserver |
+| `npm run analyzer`  | 分析项目中的依赖 |
+
+## 目录说明
+
 ```
-网站/
-├── lib/
-|   |── app/
-|   |   |── app.css
-|   |   |── app.js
-|   |   └── res/
-|   |── vendor/
-|   |   |── vendor.css
-|   |   |── vendor.js
-|   |   └── ...
-|   └── cdn/
-|
-├── page1/
-|   |── page1.html
-|   |── page1.css
-|   |── page1.js
-|   └── res/
-|       └── page1.jpg
-|
-└── page.../
-```
-
-我们的 `page1.html` 应该差不多是这个样子
-```
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>page1</title>
-    <link rel="stylesheet" href="../lib/vendor/vendor.css">
-    <link rel="stylesheet" href="../lib/app/app.css">
-    <link rel="stylesheet" href="page1.css">
-</head>
-<body>
-    <p>page1 的内容</p>
-    <script src="../lib/vendor/vendor.js"></script>
-    <script src="../lib/app/app.js"></script>
-    <script src="page1.js"></script>
-</body>
-</html>
+webpack-driven-web/
+├── src/                         -- 项目源码
+├── dist/                        -- 构建生成(前端部署的目录)
+├── config/
+|   |── webpack.base.config.js   -- webpack 基础配置
+|   |── project-config.js        -- 项目配置和环境配置
+|   └── HashedModuleIdsPlugin.js -- 用于生成稳定的模块ID(源自 webpack2)
+|── _mockserver.json             -- puer-mock 接口配置文件
+|── _apidoc.html
+|── _mockserver.js
+|── package.json
+└── webpack.config.js
 ```
 
-或者我们使用公共 CDN 来引入第三方依赖的库
-```
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>page1</title>
-    <link rel="stylesheet" href="http://freecdn.com/vendor1.css">
-    <link rel="stylesheet" href="http://freecdn.com/vendor2.css">
-    <link rel="stylesheet" href="../lib/app/app.css">
-    <link rel="stylesheet" href="page1.css">
-</head>
-<body>
-    <p>page1 的内容</p>
-    <script src="http://freecdn.com/vendor1.js"></script>
-    <script src="http://freecdn.com/vendor2.js"></script>
-    <script src="../lib/app/app.js"></script>
-    <script src="page1.js"></script>
-</body>
-</html>
-```
+## 常见问题答疑
 
-## 理想很丰满现实很骨干
-想要达到理想中开发的效果, 我们首先需要应对各种各样的依赖问题.
-
-* JS 依赖
-  - CommonJS 模块(托管在 npm 或本地的)
-  - AMD 模块
-  - [UMD](https://github.com/umdjs/umd) 模块
-  - 全局模块(那些直接暴露在 window 的全局变量)
-  - 插件类模块(例如 jQuery 插件), 只是增强功能, 不会暴露出全局变量
-* CSS 依赖
-* 资源依赖
-
-## 如何使用 Code Splitting
-```javascript
-// 一个 require.ensure 即一个 Code Splitting 分离点, 即产生一个chunk.js
-// 如果延迟执行 require.ensure 即可延时加载这个js
-require.ensure([], function(require) {
-    var mod1 = require('./mod1.js');
-    mod1.run();
-});
-```
-
-## 如何使用这个项目
-```bash
-npm install
-npm run dev
-npm run build
-```
-
-**通过 webpack 打包后的最终效果**
-```
-dist/
-├── index/
-|   |── index.html
-|   |── index.[hash].js
-|   |── 1.[chunkhash].js
-|   └── 2.[chunkhash].js
-|
-└── about/
-    |── about.html
-    |── about.[hash].js
-    |── 1.[chunkhash].js
-    └── 2.[chunkhash].js
-```
-
-## TODO
-* 如何在项目中管理 CSS(在这里引入 PostCSS)
-  - 并最终打包成一个页面.css
-  - 需要支持 css sprite
-* 通过 ExtractTextPlugin + css-loader + file-loader 实现 css 依赖管理
-  - 有个弊端就是所有文件都是打包到模块的输入目录中, 而不是保持开发是的目录结果
-  - 会导致共享资源没有没有集中加载
-  - 例如: css 中 background-image: url(../lib/app/res/github-publish.png);
-  - 结果会在 output 目录中复制过来这个图片, 最终变为 background-image: url(github-publish.png);
-  - 可能需要是一个其他的方案, 例如 PostCSS + gulp
-
-## 参考
-* [在Webpack中使用Code Splitting实现按需加载](http://www.alloyteam.com/2016/02/code-split-by-routes/)
-* [Welcome to Future of Web Application Delivery](https://medium.com/@ryanflorence/welcome-to-future-of-web-application-delivery-9750b7564d9f#.pf5iadz0j)
-  
-  > I’ve known for years I was delivering my web application the wrong way.
-  > * Dropping 9 script tags at the top of a page and blocking UI
-  > * Dropping 132 script tags at the bottom of a page, screwing up the order of dependencies and flooding the network
-  > * Using AMD without a build with waterfall dependency loading (oops)
-  > * Using modules with a build, sending 650 kilobytes of gzipped code in a single file that the visitor probably won’t ever need to run. Also, not sending any HTML over the network but building it all with JavaScript after JavaScript loaded.
-* [webpack使用小记](http://pinkyjie.com/2016/03/05/webpack-tips)
-* [webpack的几个常用loader](http://www.blogways.net/blog/2016/01/19/webpack-loader.html)
-* [webpack使用优化](http://www.alloyteam.com/2016/01/webpack-use-optimization/)
-* [An Introduction To PostCSS](http://www.smashingmagazine.com/2015/12/introduction-to-postcss/)
-* [](https://github.com/PinkyJie/angular1-webpack-starter)
-* http://pinkyjie.com/2016/01/31/component-based-development-with-angular-1x/
-* http://pinkyjie.com/2015/08/02/commonly-used-gulp-plugins-part-1/
-* http://pinkyjie.com/2015/08/12/commonly-used-gulp-plugins-part-2/
-* http://pinkyjie.com/2016/02/20/separation-of-concerns-in-unit-test/
-* http://pinkyjie.com/2016/02/21/e2e-testing-in-angular/
+* [为什么做这个工程化实践?]()
+* [如何添加其他的页面?]()
+* [如何指定的开发模式?]()
+* [最终构建后的效果是怎样的?]()
+* [什么时候支持 webpack 2.x?]()
+* [参考]()

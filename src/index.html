@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" class="html--sticky-footer">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>首页 | 通过 webpack 来驱动 Web 开发</title>
+</head>
+<body class="body--sticky-footer">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index.html">Project name</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/index.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/about/about.html">About</a></li>
+                            <li><a href="/about/foo/foo.html">Foo</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Nav header</li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container container--sticky-footer">
+        <div class="page-header">
+            <h1>通过 webpack 来驱动 Web 开发</h1>
+            <ul>
+                <li>webpack 前端工程化应用</li>
+                <li>基于 webpack 的多页应用架构</li>
+            </ul>
+        </div>
+
+        <h2>模块划分</h2>
+        <p class="lead">
+            <ul>
+                <li>
+                    <p>CSS</p>
+                    <ol class="module-list">
+                        <li>vendor.css <span class="label label-default">第三方样式</span></li>
+                        <li>app.css <span class="label label-default">项目公共样式</span></li>
+                        <li>index.css <span class="label label-primary">页面样式</span></li>
+                    </ol>
+                </li>
+                <li>
+                    <p>JS</p>
+                    <ol class="module-list">
+                        <li><span class="text-muted">manifest.js</span> <span class="label label-default">webpackruntime</span></li>
+                        <li>vendor.js <span class="label label-default">第三方逻辑</span></li>
+                        <li>app.js <span class="label label-default">项目公共逻辑</span></li>
+                        <li>index.js <span class="label label-primary">页面逻辑</span></li>
+                    </ol>
+                </li>
+            </ul>
+        </p>
+
+        <h2>在 HTML 中引用资源</h2>
+        <p>
+            <code>&lt;img src="&lt;%= require('./index/res/modules.png') %&gt;"&gt;</code>
+            <!-- 在 HTML 中引用资源 -->
+            <img src="<%= require('./index/res/modules.png') %>" alt="">
+        </p>
+
+        <h2>测试</h2>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-home"></span> Tab1</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-user"></span> Tab2</a></li>
+            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-comment"></span> Tab3</a></li>
+            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-wrench"></span> Tab4</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="home">
+                <p>webpack 核心思想是一切都是模块, 所有模块通过 JS 来管理</p>
+                <span class="what-is-webpack" data-toggle="tooltip" data-placement="right" title=".what-is-webpack"></span>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="profile">
+                <p>Tab2 tab-content</p>
+                <span class="icon--pirate" data-toggle="tooltip" data-placement="right" title=".icon--pirate"></span>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="messages">
+                <p>Tab3 tab-content</p>
+                <img src="<%= require('./index/res/github-publish.png') %>" alt="">
+            </div>
+            <div role="tabpanel" class="tab-pane" id="settings">
+                <p>Tab4 tab-content</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer--sticky-footer">
+        <div class="container">
+            <p class="text-muted">© 2016 Company, Inc. <span class="pull-right">Powered by webpack</span></p>
+        </div>
+    </footer>
+    <%= htmlWebpackPlugin.files.webpackManifest %>
+    <!-- 通过 HtmlWebpackPlugin 生成打包后需要引入的 css 和 js -->
+</body>
+</html>
