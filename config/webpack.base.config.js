@@ -70,7 +70,8 @@ var webpackConfig = {
             }
         }, { // css
             test: /\.css$/,
-            loader: ExtractTextPlugin.extract('css?' + JSON.stringify(config.cssLoader))
+            // 配置 notExtractLoader, 当 CSS 没有被提取出来的时候降级到另外的 loader 来加载样式
+            loader: ExtractTextPlugin.extract('style-loader', 'css?' + JSON.stringify(config.cssLoader))
         }, { // 其他静态资源
             test: /\.(jpe?g|png|gif|svg)$/i, // 图片资源
             loaders: [
@@ -97,7 +98,9 @@ var webpackConfig = {
             'window.$': 'jquery',
             'window.jQuery': 'jquery'
         }),
-        new ExtractTextPlugin(config.output.cssFilename),
+        new ExtractTextPlugin(config.output.cssFilename, {
+            allChunks: false // 涉及到通过 Code Spliting 加载的异步模块中的样式如何提取
+        }),
         // CommonsChunkPlugin的效果是：在你的多个页面（入口）所引用的代码中，找出其中满足条件（被多少个页面引用过）的代码段，判定为公共代码并打包成一个独立的js文件。至此，你只需要在每个页面都加载这个公共代码的js文件，就可以既保持代码的完整性，又不会重复下载公共代码了（多个页面间会共享此文件的缓存）。
         new webpack.optimize.CommonsChunkPlugin({
             // vendor bundle changes when the application code changes

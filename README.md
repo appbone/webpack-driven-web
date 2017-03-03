@@ -64,6 +64,7 @@ webpack-driven-web/
 
 * [为什么做这个工程化实践?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#为什么做这个工程化实践)
 * [如何添加其他的页面?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#如何添加其他的页面)
+* [如何处理通过 Code Spliting 懒加载的模块中包含的 CSS?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#如何处理通过 Code Spliting 懒加载的模块中包含的 CSS)
 * [如何指定的开发模式?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#如何指定的开发模式)
 * [最终构建后的效果是怎样的?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#最终构建后的效果是怎样的)
 * [什么时候支持 webpack 2.x?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#什么时候支持-webpack-2x)

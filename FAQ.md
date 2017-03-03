@@ -143,6 +143,26 @@ addPageEntry('page1/page1/subpage');
 // 这样就相当于为 webpack 添加了入口模块为 'page1/page1/subpage': 'page1/page1/subpage.js'
 ```
 
+## 如何处理通过 Code Spliting 懒加载的模块中包含的 CSS?
+
+* 方式一: 给 `ExtractTextPlugin.extract` 配置 `notExtractLoader`, 同时配置 `ExtractTextPlugin` `allChunks` 为 `false` (默认值)
+
+  例如:
+  
+  ```javascript
+  ExtractTextPlugin.extract('style-loader', 'css')
+  new ExtractTextPlugin('style.css', {allChunks: false})
+  ```
+
+  由于 `new ExtractTextPlugin` 的默认配置只提取入口模块中的 CSS, 对于通过 Code Spliting 加载的模块,
+  其中包含的 CSS 内容会作为文本待在模块中(不会被提取成单独的 CSS 文件), 因此最终没有在页面中生效(因为此时没有使用 `style-loader`).
+
+  因此我们给 `ExtractTextPlugin.extract` 配置 `notExtractLoader`, 它的作用就是当模块中的 CSS 没有被提取出来时, 告诉 webpack 应该使用另外的什么 loader 来加载这个文件, 这里我们当然就是使用 `style-loader` 来动态的在页面中插入 style 元素来加载异步模块中的样式了
+
+* 方式二: 配置 `ExtractTextPlugin` `allChunks` 为 `true`, 提取所有模块中的 CSS, 包括 Code Spliting 分离出来的模块
+
+  这样通过 Code Spliting 加载的模块中的 CSS 会包含在入口模块的 CSS 中(例如 index.css). 相当于只异步加载 JS 模块, JS 模块中包含的样式合并到入口模块的 CSS 中一开始就加载了.
+
 ## 如何指定的开发模式?
 
 通过环境变量(`MODE`)来控制, 例如在 `scripts` 中设置 `cross-env MODE=dev`, 你可以扩展出其他模式, 例如预发布模式
