@@ -204,30 +204,136 @@ dist/
 └── index.html                      -- 首页
 ```
 
+## 如何扩展为支持 Vue 的项目?
+
+* 安装 Vue (包括 vue-loader), 参考[vuejs-templates/webpack-simple](https://github.com/vuejs-templates/webpack-simple)
+
+  ```
+  npm install vue --save
+  npm install vue-loader vue-template-compiler --save-dev
+  ```
+* 添加 `vue-loader` 来处理(.vue)单文件组件
+
+  当然了, 如果你不需要单文件组件功能, 可以不用配置和安装 `vue-loader` 和 `vue-template-compiler`
+
+  ```javascript
+  // config/webpack.base.config.js
+  // module.loaders
+  {
+      test: /\.vue$/,
+      loader: 'vue-loader'
+  }
+  ```
+
+* 配置 `vue-loader` 参数, 增加对 `<script>` 中 `es2015` 的支持
+
+  当然了, 如果你不需要在 `.vue` 文件中使用 `es2015`, 可以不用这么配置, 就只能使用 CommonJS 的模块方式, 但这种情况基本上不存在.
+  
+  不配置就在 `.vue` 文件中使用 `es2015` 的话会出现这样的错误: `Uncaught SyntaxError: Unexpected token export`
+
+  ```javascript
+  // config/webpack.base.config.js
+  //
+  // https://vue-loader.vuejs.org/en/options.html
+  vue: { // webpack1 的配置方式
+      loaders: {
+          js: 'babel-loader?{"presets":["es2015"]}'
+      }
+  }
+  ```
+* 通过 `alias` 配置使用 `vue.js` 的哪个发行版
+
+  ```javascript
+  // config/webpack.base.config.js
+  // resolve.alias
+  //
+  // Explanation of Build Files
+  // https://github.com/vuejs/vue/tree/dev/dist#explanation-of-build-files
+  //
+  // vue 模块默认使用的是 Runtime-only 版
+  // "main": "dist/vue.runtime.common.js",
+  //
+  // 如果你不需要编译器, 在代码中不使用模版(template)功能, 则可以使用 runtime 版
+  // 例如: render: h => h(App)
+  //
+  // 如果你搞不清使用了什么版本, 或者到底要使用什么版本, 出现了下面的错误,
+  // 那么你可以使用 UMD 版的 'vue/dist/vue.[min].js' 或者 CommonJS 版的 vue.common.js
+  // * Failed to mount component: template or render function not defined. 
+  // * You are using the runtime-only build of Vue where the template option is not available. Either pre-compile the templates into render functions, or use the compiler-included build.
+  'vue$': 'vue/dist/vue.js'
+  ```
+* 修改 `vendor` 添加 `vue`
+
+  ```javascript
+  // config/project-config.js
+  vendor: [
+      '...',
+      'vue'
+  ]
+  ```
+* 然后愉快的写 Vue
+
+  ```html
+  <template>
+      <div class="example">{{ msg }}</div>
+  </template>
+
+  <script>
+  export default {
+      data() {
+          return {
+              msg: 'Hello world!'
+          }
+      }
+  };
+  </script>
+
+  <style>
+  .example {
+      color: red;
+  }
+  </style>
+  ```
+
+  ```javascript
+  import Vue from 'vue';
+  import App from './App.vue';
+
+  new Vue({
+      el: '#root',
+      components: {
+          'app': App
+      }
+  });
+  ```
+
+  ```html
+  <div id="root"><app></app></div>
+  ```
+
 ## 如何扩展为支持 React 的项目?
 
-* 安装 React (包括 babel preset)
+* 安装 React (包括 `babel preset`), 参考[Babel JSX](https://babeljs.io/#jsx-and-flow)
 
   ```
   npm install react react-dom --save
   npm install babel-preset-react --save-dev
   ```
-* 修改 `babel-loader` 添加 react
+* 修改 `babel-loader` 添加 `react`
 
   ```javascript
   // config/webpack.base.config.js
+  // module.loaders > babel-loader
   presets: ['es2015', 'react']
   ```
-* 修改 `vendor` 添加 react
+* 修改 `vendor` 添加 `react`
 
   ```javascript
   // config/project-config.js
   vendor: [
-      'jquery',
-      'bootstrap',
-      'react',     // react
-      'react-dom', // react-dom
-      'bootstrap/dist/css/bootstrap.css'
+      '...',
+      'react',
+      'react-dom'
   ]
   ```
 * 然后愉快的写 React
