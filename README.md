@@ -67,5 +67,6 @@ webpack-driven-web/
 * [如何处理通过 Code Spliting 懒加载的模块中包含的 CSS?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#如何处理通过 Code Spliting 懒加载的模块中包含的 CSS)
 * [如何指定的开发模式?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#如何指定的开发模式)
 * [最终构建后的效果是怎样的?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#最终构建后的效果是怎样的)
+* [如何扩展为支持 React 的项目?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#如何扩展为支持 React 的项目)
 * [什么时候支持 webpack 2.x?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#什么时候支持-webpack-2x)
 * [参考](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#参考)

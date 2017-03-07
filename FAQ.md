@@ -204,6 +204,57 @@ dist/
 └── index.html                      -- 首页
 ```
 
+## 如何扩展为支持 React 的项目?
+
+* 安装 React (包括 babel preset)
+
+  ```
+  npm install react react-dom --save
+  npm install babel-preset-react --save-dev
+  ```
+* 修改 `babel-loader` 添加 react
+
+  ```javascript
+  // config/webpack.base.config.js
+  presets: ['es2015', 'react']
+  ```
+* 修改 `vendor` 添加 react
+
+  ```javascript
+  // config/project-config.js
+  vendor: [
+      'jquery',
+      'bootstrap',
+      'react',     // react
+      'react-dom', // react-dom
+      'bootstrap/dist/css/bootstrap.css'
+  ]
+  ```
+* 然后愉快的写 React
+
+  ```javascript
+  import React, {
+      Component
+  } from 'react';
+  import ReactDOM from 'react-dom';
+
+  class App extends Component {
+    constructor(props) {
+      super(props);
+    }
+
+    render() {
+      return (
+        <div className="test">
+          {this.props.a}
+        </div>
+      );
+    }
+  }
+
+  ReactDOM.render(<App a="可以用 react 了" />, document.getElementById('root'));
+  ```
+
 ## 什么时候支持 webpack 2.x?
 
 再等等吧, 生态还不成熟... 况且 webpack 1.x 已经解决了我的问题, 有兴趣的可以基于这个项目自己做一个 webpack 2.x 的版本
