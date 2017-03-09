@@ -260,6 +260,15 @@ dist/
   // 那么你可以使用 UMD 版的 'vue/dist/vue.[min].js' 或者 CommonJS 版的 vue.common.js
   // * Failed to mount component: template or render function not defined. 
   // * You are using the runtime-only build of Vue where the template option is not available. Either pre-compile the templates into render functions, or use the compiler-included build.
+  // 
+  // 具体情况可以参考: 独立构建和运行构建, 它们的区别在于前者包含模板编译器而后者不包含
+  // * 模板编译用于编译 Vue 模板字符串成纯 JavaScript 渲染函数。如果你想用 template 选项， 你需要编译
+  // * 模板编译器的职责是将模板字符串编译为纯 JavaScript 的渲染函数
+  // * 独立构建包含模板编译器并支持 template 选项。 它也依赖于浏览器的接口的存在，所以你不能使用它来为服务器端渲染
+  // * 运行时构建不包含模板编译器，因此不支持 template 选项，只能用 render 选项
+  //   * 但即使使用运行时构建，在单文件组件中也依然可以写模板，因为单文件组件的模板会在构建时预编译为 render 函数
+  //   * 运行时构建比独立构建要轻量
+  // https://cn.vuejs.org/v2/guide/installation.html#独立构建-vs-运行时构建
   'vue$': 'vue/dist/vue.js'
   ```
 * 修改 `vendor` 添加 `vue`
