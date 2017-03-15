@@ -157,7 +157,7 @@ addPageEntry('page1/page1/subpage');
   由于 `new ExtractTextPlugin` 的默认配置只提取入口模块中的 CSS, 对于通过 Code Spliting 加载的模块,
   其中包含的 CSS 内容会作为文本待在模块中(不会被提取成单独的 CSS 文件), 因此最终没有在页面中生效(因为此时没有使用 `style-loader`).
 
-  因此我们给 `ExtractTextPlugin.extract` 配置 `notExtractLoader`, 它的作用就是当模块中的 CSS 没有被提取出来时, 告诉 webpack 应该使用另外的什么 loader 来加载这个文件, 这里我们当然就是使用 `style-loader` 来动态的在页面中插入 style 元素来加载异步模块中的样式了
+  这就是为什么我们需要给 `ExtractTextPlugin.extract` 配置 `notExtractLoader`, 它的作用就是当模块中的 CSS 没有被提取出来时, 告诉 webpack 应该使用另外的什么 loader 来加载这个文件, 这里我们当然就是使用 `style-loader` 来动态的在页面中插入 style 元素来加载异步模块中的样式了
 
 * 方式二: 配置 `ExtractTextPlugin` `allChunks` 为 `true`, 提取所有模块中的 CSS, 包括 Code Spliting 分离出来的模块
 
@@ -237,6 +237,32 @@ dist/
   // https://vue-loader.vuejs.org/en/options.html
   vue: { // webpack1 的配置方式
       loaders: {
+          // http://vue-loader.vuejs.org/en/configurations/extract-css.html
+          // 默认使用 .vue 单文件组件时(不配置下面的这个 css 项), 不管你是以同步 import 的方式来使用这个组件,
+          // 还是以异步的 code spliting 方式来使用这个组件, 组件中的 css 都是通过 style 元素添加到页面中来的, 而非合并到一个 css 文件
+          //
+          // 因此需要配置 ExtractTextPlugin 提取出组件模块中的 css 内容, 最终合并会一个 css 文件.
+          //
+          // 对于通过 code spliting 异步加载的 .vue 组件, css 处理的逻辑与[如何处理通过 Code Spliting 懒加载的模块中包含的 CSS?](https://github.com/appbone/webpack-driven-web/blob/master/FAQ.md#如何处理通过-code-spliting-懒加载的模块中包含的-css)是一样的
+          // 对于 import 方式同步加载使用的组件, css 内容会合并到入口模块的 css 文件中,
+          // 对于 code spliting 方式异步加载使用的组件, css 内容由于没有从模块中提取出来, 而降级到以 style 元素添加到页面上
+          // 
+          // 这里给出通过 code spliting 方式懒加载 .vue 组件的示例
+          // new Vue({
+          //     el: '#root',
+          //     components: {
+          //         'app': function(resolve, reject) {
+          //             setTimeout(function() {
+          //                 require.ensure(['./app.vue'], function() {
+          //                     var App = require('./app.vue');
+          //                     console.log('lazyMod .vue', App);
+          //                     resolve(App);
+          //                 });
+          //             }, 3000)
+          //         }
+          //     }
+          // });
+          css: ExtractTextPlugin.extract('style-loader', 'css?' + JSON.stringify(config.cssLoader)),
           js: 'babel-loader?{"presets":["es2015"]}'
       }
   }
