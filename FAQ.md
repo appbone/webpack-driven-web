@@ -314,6 +314,9 @@ dist/
   </template>
 
   <script>
+  // https://vue-loader.vuejs.org/en/start/spec.html#src-imports
+  // 很多人可能没有了解到, 其实 .vue 文件的各个部分也是可以通过 src import 进来的
+  // 例如: <script src="./app.js"></script>
   export default {
       data() {
           return {
