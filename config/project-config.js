@@ -34,7 +34,8 @@ var config = {
     cdnPath: '/',
 
     // [devtool里的7种SourceMap模式是什么鬼](https://gold.xitu.io/post/58293502a0bb9f005767ba2f)
-    devtool: 'cheap-module-source-map',
+    // XXX 用了 cheap-module-source-map 模式后, 发现在 chrome 中无法查看变量的值了, 还是安静的使用 source-map 吧
+    devtool: 'source-map', // cheap-module-source-map
 
     // Loader/Plugin 的配置
     cssLoader: {
