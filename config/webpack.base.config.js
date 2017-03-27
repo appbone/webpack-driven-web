@@ -87,6 +87,10 @@ var webpackConfig = {
     plugins: [
         // 相当于替换代码中的占位
         new webpack.DefinePlugin({
+            // 可以将运行环境单独提出来, 方便在代码中使用 dead_code
+            // 例如 if (__MODE__ == 'dev') { console.log('日志'); }
+            // 这样在构建时, UglifyJS 会帮我们删掉这段代码
+            __MODE__: JSON.stringify(env.MODE),
             __ENV__: JSON.stringify(env)
         }),
         // https://segmentfault.com/a/1190000006887523
