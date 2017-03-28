@@ -31,6 +31,7 @@
     "inline-manifest-webpack-plugin": "^3.0.1",
     "puer-mock": "1.x",
     "rimraf": "^2.5.4",
+    "style-loader": "^0.16.0",
     "url-loader": "^0.5.7",
     "webpack": "1.x",
     "webpack-bundle-analyzer": "^2.2.3",

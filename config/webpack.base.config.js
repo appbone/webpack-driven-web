@@ -73,14 +73,16 @@ var webpackConfig = {
             // 配置 notExtractLoader, 当 CSS 没有被提取出来的时候降级到另外的 loader 来加载样式
             loader: ExtractTextPlugin.extract('style-loader', 'css?' + JSON.stringify(config.cssLoader))
         }, { // 其他静态资源
-            test: /\.(jpe?g|png|gif|svg)$/i, // 图片资源
+            test: /\.(jpe?g|png|gif|svg)(\?\S*)?$/i, // 图片资源
             loaders: [
                 // 对于小质量的图片资源, 由 url-loader 实现将其进行统一打包, 对于所有小于 8kb 的图片资源转换成base64 格式. 这在一定程度上可以替代 CSS Sprites 方案, 用于减少对于小图片资源的HTTP请求数量
                 'url-loader?limit=' + config.urlLoader.limit + '&name=' + config.output.res + '/' + config.output.resFilename,
                 'image-webpack?' + JSON.stringify(config.imageWebpack)
             ]
         }, {
-            test: /\.(eot|ttf|woff|woff2)$/i, // 字体
+            // 参考 ElemeFE/cooking
+            // https://github.com/ElemeFE/cooking/blob/master/packages/cooking/util/get-base-config.js
+            test: /\.(otf|eot|ttf|woff2?)(\?\S*)?$/i, // 字体
             loader: 'url-loader?limit=' + config.urlLoader.limit + '&name=' + config.output.res + '/' + config.output.resFilename
         }] // 还可以配置 raw-loader 在某些情况下可以使用, 例如直接放入某文件的内容
     },
