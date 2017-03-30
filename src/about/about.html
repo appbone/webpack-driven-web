@@ -19,16 +19,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/index.html">Project name</a>
+                <a class="navbar-brand" href="<%= htmlWebpackPlugin.options.cdnPath %>index.html">Project name</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="<%= htmlWebpackPlugin.options.cdnPath %>index.html">Home</a></li>
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li class="active"><a href="/about/about.html">About</a></li>
-                            <li><a href="/about/foo/foo.html">Foo</a></li>
+                            <li class="active"><a href="<%= htmlWebpackPlugin.options.cdnPath %>about/about.html">About</a></li>
+                            <li><a href="<%= htmlWebpackPlugin.options.cdnPath %>about/foo/foo.html">Foo</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-header">Nav header</li>
                             <li><a href="#">Separated link</a></li>

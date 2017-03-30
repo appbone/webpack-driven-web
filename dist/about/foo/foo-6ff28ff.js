@@ -1,0 +1,2 @@
+/*! webpack-driven-web | (c) Sun */
+webpackJsonp([1,6],{0:function(e,u,t){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(u,"__esModule",{value:!0});var o=t("OF5A"),f=(n(o),t("Bb4J")),c=(n(f),t("fpcd"));n(c);t("Jmus"),u.default="foo"},Jmus:function(e,u){}});

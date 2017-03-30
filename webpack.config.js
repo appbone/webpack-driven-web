@@ -74,12 +74,13 @@ function addPageWebpackConfig(pageEntry) {
                     minifyJS: true,
                     minifyCSS: true,
                     minifyURLs: true
-                }
+                },
                 // 配置信息可以在 template 中使用, 例如 <%= htmlWebpackPlugin.options.option1 %>
                 // 因此可以在这里实现 ejs 的 Including nested templates 功能
                 // https://github.com/okonet/ejs-loader#including-nested-templates
                 // 
                 // 其他可以使用的变量还有: webpack, webpackConfig
+                cdnPath: config.cdnPath
             })
         ]
     });

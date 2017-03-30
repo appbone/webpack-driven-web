@@ -191,6 +191,10 @@ if (env.MODE == 'dev') {
     webpackConfig.devtool = config.devtool;
 } else {
     webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin(config.uglifyJsPlugin));
+
+    // 通过配置 alias 的方式来优化打包的大小
+    webpackConfig.resolve.alias['jquery$'] = 'jquery/dist/jquery.min.js';
+    webpackConfig.resolve.alias['bootstrap$'] = 'bootstrap/dist/js/bootstrap.min.js';
 }
 
 module.exports = webpackConfig;

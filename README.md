@@ -8,6 +8,8 @@ wdw: 通过 webpack 来驱动 Web 开发
 
 ## 功能
 
+[webpack-driven-web 功能演示](http://rawgit.com/appbone/webpack-driven-web/master/dist/index.html)
+
 * 基于 `webpack@1.x` 的前端工程化实践
   * 没有任何魔法, 便于扩展出适合自己的前端工程化方案, 例如单页, react, vue 等
 * 使用 `ES2015` 来开发
