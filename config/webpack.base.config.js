@@ -156,6 +156,7 @@ var webpackConfig = {
     devServer: {
         contentBase: config.output.dist,
         // 默认只监听 localhost, 如果想通过 IP 来访问, 需要添加 host
+        // 但这样设置后自动 open 浏览器打开的是 http://0.0.0.0:8080/ 无法访问
         // host: '0.0.0.0',
         // 通过代理来使用原来的 puer-mock 提供的 mockserver 功能
         // puer 的其他功能使用 webpack-dev-server 来代替
